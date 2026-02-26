@@ -1,9 +1,16 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, DateTime
+from sqlalchemy import (
+    Column, 
+    Integer, 
+    String, 
+    Text, 
+    Numeric, 
+    DateTime
+)
 from app.database import Base
 from datetime import datetime
 
 class CourseModel(Base):
-    __tablename__ = "Courses"
+    __tablename__ = "courses"
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
@@ -19,7 +26,7 @@ class CourseModel(Base):
 
 
 class UserModel(Base):
-    __tablename__ = "Users"
+    __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255), nullable=True)
