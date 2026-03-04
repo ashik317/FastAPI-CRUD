@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["Authentication"]
 )
 
-@router.post("/login/", response_model=UserList)
+@router.post("/login/", response_model=dict)
 def login_user(login: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(models.UserModel).filter(
         models.UserModel.email == login.email
@@ -20,4 +20,4 @@ def login_user(login: LoginRequest, db: Session = Depends(get_db)):
     if not user or not verify_password(login.password, user.password):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     
-    return user
+    return {"message": "Login successful"}
