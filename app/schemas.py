@@ -65,3 +65,8 @@ class LoginRequest(BaseModel):
     model_config = {
         "use_enum_values": True
     }
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+    message: str
