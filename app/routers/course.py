@@ -16,7 +16,7 @@ router = APIRouter(
 def create_course(
     course: CourseCreate,
     db: Session = Depends(get_db),
-    get_current_user: int=Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user)
 ):
     db_course = models.CourseModel(**course.model_dump())
     try:
@@ -31,13 +31,13 @@ def create_course(
 
 # List courses
 @router.get("/list/")
-def list_courses(db: Session = Depends(get_db), get_current_user = Depends(auth2.get_current_user)):
+def list_courses(db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
     return db.query(models.CourseModel).all()
 
 
 # Get single course
 @router.get("/{course_id}/")
-def get_course(course_id: int, db: Session = Depends(get_db), get_current_user = Depends(auth2.get_current_user)):
+def get_course(course_id: int, db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
     course = db.query(models.CourseModel).filter(
         models.CourseModel.id == course_id
     ).first()
@@ -53,7 +53,7 @@ def update_course(
     course_id: int,
     course: CourseCreate,
     db: Session = Depends(get_db),
-    get_current_user = Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user)
 ):
     db_course = db.query(models.CourseModel).filter(
         models.CourseModel.id == course_id
@@ -80,7 +80,7 @@ def partial_update_course(
     course_id: int,
     course: CourseUpdate,
     db: Session = Depends(get_db),
-    get_current_user = Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user)
 ):
     db_course = db.query(models.CourseModel).filter(
         models.CourseModel.id == course_id
@@ -103,7 +103,7 @@ def partial_update_course(
 
 # Delete course
 @router.delete("/delete/{course_id}/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_course(course_id: int, db: Session = Depends(get_db), get_current_user = Depends(auth2.get_current_user)):
+def delete_course(course_id: int, db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
     db_course = db.query(models.CourseModel).filter(
         models.CourseModel.id == course_id
     ).first()
