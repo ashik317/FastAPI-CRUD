@@ -70,3 +70,10 @@ class TokenResponse(BaseModel):
     access_token: str
     token_type: str
     message: str
+
+class VerifyTokenResponse(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id: Optional[int] = None
