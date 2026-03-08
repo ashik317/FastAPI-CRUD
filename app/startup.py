@@ -2,6 +2,7 @@ import time
 from app.database import engine, Base
 import app.models  # forces model registration
 
+
 def startup_db():
     retries = 15
     for i in range(retries):

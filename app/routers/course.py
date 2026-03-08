@@ -8,17 +8,17 @@ from app import auth2
 from app.database import get_db
 from app.schemas import CourseCreate, CourseUpdate, CousereResponse
 
-router = APIRouter(
-    prefix="/course",
-    tags=["Course"]
-)
+router = APIRouter(prefix="/course", tags=["Course"])
+
 
 # Create course
-@router.post("/create/", response_model=CousereResponse, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/create/", response_model=CousereResponse, status_code=status.HTTP_201_CREATED
+)
 def create_course(
     course: CourseCreate,
     db: Session = Depends(get_db),
-    current_user: models.UserModel = Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user),
 ):
     db_course = models.CourseModel(**course.model_dump(), cretor_id=current_user.id)
     try:
@@ -34,22 +34,28 @@ def create_course(
 # List courses
 @router.get("/list/")
 def list_courses(
-    db: Session = Depends(get_db), 
-    current_user: models.UserModel = Depends(auth2.get_current_user), 
-    search:Optional[str] = None
+    db: Session = Depends(get_db),
+    current_user: models.UserModel = Depends(auth2.get_current_user),
+    search: Optional[str] = None,
 ):
-    courses = db.query(models.CourseModel).filter(
-        models.CourseModel.name.contains(search)
-    ).all()
+    courses = (
+        db.query(models.CourseModel)
+        .filter(models.CourseModel.name.contains(search))
+        .all()
+    )
     return courses
 
 
 # Get single course
 @router.get("/{course_id}/")
-def get_course(course_id: int, db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
-    course = db.query(models.CourseModel).filter(
-        models.CourseModel.id == course_id
-    ).first()
+def get_course(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.UserModel = Depends(auth2.get_current_user),
+):
+    course = (
+        db.query(models.CourseModel).filter(models.CourseModel.id == course_id).first()
+    )
 
     if not course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -62,11 +68,11 @@ def update_course(
     course_id: int,
     course: CourseCreate,
     db: Session = Depends(get_db),
-    current_user: models.UserModel = Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user),
 ):
-    db_course = db.query(models.CourseModel).filter(
-        models.CourseModel.id == course_id
-    ).first()
+    db_course = (
+        db.query(models.CourseModel).filter(models.CourseModel.id == course_id).first()
+    )
 
     if not db_course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -89,11 +95,11 @@ def partial_update_course(
     course_id: int,
     course: CourseUpdate,
     db: Session = Depends(get_db),
-    current_user: models.UserModel = Depends(auth2.get_current_user)
+    current_user: models.UserModel = Depends(auth2.get_current_user),
 ):
-    db_course = db.query(models.CourseModel).filter(
-        models.CourseModel.id == course_id
-    ).first()
+    db_course = (
+        db.query(models.CourseModel).filter(models.CourseModel.id == course_id).first()
+    )
 
     if not db_course:
         raise HTTPException(status_code=404, detail="Course not found")
@@ -112,10 +118,14 @@ def partial_update_course(
 
 # Delete course
 @router.delete("/delete/{course_id}/", status_code=status.HTTP_204_NO_CONTENT)
-def delete_course(course_id: int, db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
-    db_course = db.query(models.CourseModel).filter(
-        models.CourseModel.id == course_id
-    ).first()
+def delete_course(
+    course_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.UserModel = Depends(auth2.get_current_user),
+):
+    db_course = (
+        db.query(models.CourseModel).filter(models.CourseModel.id == course_id).first()
+    )
 
     if not db_course:
         raise HTTPException(status_code=404, detail="Course not found")
