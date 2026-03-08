@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
@@ -31,8 +33,15 @@ def create_course(
 
 # List courses
 @router.get("/list/")
-def list_courses(db: Session = Depends(get_db), current_user: models.UserModel = Depends(auth2.get_current_user)):
-    return db.query(models.CourseModel).all()
+def list_courses(
+    db: Session = Depends(get_db), 
+    current_user: models.UserModel = Depends(auth2.get_current_user), 
+    search:Optional[str] = None
+):
+    courses = db.query(models.CourseModel).filter(
+        models.CourseModel.name.contains(search)
+    ).all()
+    return courses
 
 
 # Get single course
