@@ -24,6 +24,21 @@ class CourseCreate(BaseModel):
         "use_enum_values": True
     }
 
+class CousereResponse(BaseModel):
+    name: str
+    description: str | None = None
+    duration: Decimal
+    instructor: str
+    website: str | None = None
+    created_by: str | None = None
+    updated_by: str | None = None
+    status: CourseStatus = CourseStatus.ACTIVE
+    id: int
+    cretor_id: int
+
+    class Config:
+        orm_mode = True
+
 class CourseUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
