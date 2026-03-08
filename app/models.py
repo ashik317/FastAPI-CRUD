@@ -1,5 +1,6 @@
 from sqlalchemy import (
-    Column, 
+    Column,
+    ForeignKey, 
     Integer, 
     String, 
     Text, 
@@ -23,6 +24,7 @@ class CourseModel(Base):
     created_by = Column(String(255), nullable=True)
     updated_by = Column(String(255), nullable=True)
     status = Column(String(50), default="active")
+    cretor_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
 
 class UserModel(Base):

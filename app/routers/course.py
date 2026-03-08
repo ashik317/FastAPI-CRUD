@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app import models
 from app import auth2
 from app.database import get_db
-from app.schemas import CourseCreate, CourseUpdate
+from app.schemas import CourseCreate, CourseUpdate, CousereResponse
 
 router = APIRouter(
     prefix="/course",
@@ -12,13 +12,13 @@ router = APIRouter(
 )
 
 # Create course
-@router.post("/create/", status_code=status.HTTP_201_CREATED)
+@router.post("/create/", response_model=CousereResponse, status_code=status.HTTP_201_CREATED)
 def create_course(
     course: CourseCreate,
     db: Session = Depends(get_db),
     current_user: models.UserModel = Depends(auth2.get_current_user)
 ):
-    db_course = models.CourseModel(**course.model_dump())
+    db_course = models.CourseModel(**course.model_dump(), cretor_id=current_user.id)
     try:
         db.add(db_course)
         db.commit()
