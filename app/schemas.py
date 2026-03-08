@@ -5,10 +5,12 @@ from pydantic import BaseModel
 from decimal import Decimal
 from datetime import datetime
 
+
 class CourseStatus(str, Enum):
     ACTIVE = "active"
     INACTIVE = "inactive"
     ARCHIVED = "archived"
+
 
 class CourseCreate(BaseModel):
     name: str
@@ -20,9 +22,8 @@ class CourseCreate(BaseModel):
     updated_by: str | None = None
     status: CourseStatus = CourseStatus.ACTIVE
 
-    model_config = {
-        "use_enum_values": True
-    }
+    model_config = {"use_enum_values": True}
+
 
 class CousereResponse(BaseModel):
     name: str
@@ -39,6 +40,7 @@ class CousereResponse(BaseModel):
     class Config:
         orm_mode = True
 
+
 class CourseUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
@@ -48,18 +50,16 @@ class CourseUpdate(BaseModel):
     updated_by: Optional[str] = None
     status: Optional[CourseStatus] = None
 
-    model_config = {
-        "use_enum_values": True
-    }
+    model_config = {"use_enum_values": True}
+
 
 class UserRegistration(BaseModel):
     username: str
     email: str
     password: str
-    
-    model_config = {
-        "use_enum_values": True
-    }
+
+    model_config = {"use_enum_values": True}
+
 
 class UserList(BaseModel):
     id: int
@@ -68,27 +68,26 @@ class UserList(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    model_config = {
-        "use_enum_values": True,
-        "from_attributes": True
-    }
+    model_config = {"use_enum_values": True, "from_attributes": True}
+
 
 class LoginRequest(BaseModel):
     email: str
     password: str
 
-    model_config = {
-        "use_enum_values": True
-    }
+    model_config = {"use_enum_values": True}
+
 
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str
     message: str
 
+
 class VerifyTokenResponse(BaseModel):
     access_token: str
     token_type: str
+
 
 class TokenData(BaseModel):
     id: Optional[int] = None

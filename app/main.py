@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from .routers import course, user, auth
 from app.startup import startup_db
+from .config import settings
 
 # CREATE the FastAPI app
 app = FastAPI(title="Course API")
